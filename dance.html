@@ -1,0 +1,462 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Summeri Dance Competition</title>
+    <style>
+        :root {
+            --primary-color: #1a73e8;
+            --secondary-color: #4285f4;
+            --dark-color: #333;
+            --light-color: #f8f9fa;
+            --gray-color: #6c757d;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: #f5f5f5;
+            color: var(--dark-color);
+            line-height: 1.6;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        header {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            padding: 40px 0;
+            text-align: center;
+            border-radius: 0 0 20px 20px;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+        }
+        
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            font-weight: 800;
+        }
+        
+        .subtitle {
+            font-size: 1.2rem;
+            opacity: 0.9;
+            margin-bottom: 5px;
+        }
+        
+        .date-badge {
+            display: inline-block;
+            background-color: white;
+            color: var(--primary-color);
+            padding: 8px 20px;
+            border-radius: 30px;
+            font-weight: bold;
+            margin-top: 15px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+        
+        .competition-info {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+        
+        .info-card {
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+        }
+        
+        .info-card h2 {
+            color: var(--primary-color);
+            margin-bottom: 20px;
+            font-size: 1.5rem;
+            border-bottom: 2px solid #eee;
+            padding-bottom: 10px;
+        }
+        
+        .info-item {
+            margin-bottom: 15px;
+        }
+        
+        .info-item strong {
+            color: var(--dark-color);
+            display: block;
+            margin-bottom: 5px;
+            font-size: 1.1rem;
+        }
+        
+        .info-item p {
+            color: var(--gray-color);
+        }
+        
+        .staff-section {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            margin-bottom: 40px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+        }
+        
+        .staff-section h2 {
+            color: var(--primary-color);
+            margin-bottom: 25px;
+            font-size: 1.8rem;
+            text-align: center;
+        }
+        
+        .staff-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 25px;
+        }
+        
+        .staff-card {
+            text-align: center;
+            padding: 20px;
+            border-radius: 10px;
+            background: var(--light-color);
+        }
+        
+        .staff-name {
+            font-weight: 700;
+            margin-bottom: 5px;
+            color: var(--dark-color);
+        }
+        
+        .staff-role {
+            color: var(--secondary-color);
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+        
+        /* Стили для судейской коллегии */
+        .judges-section {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            margin-bottom: 40px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+        }
+        
+        .judges-section h2 {
+            color: var(--primary-color);
+            margin-bottom: 25px;
+            font-size: 1.8rem;
+            text-align: center;
+        }
+        
+        .judges-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 25px;
+        }
+        
+        .judge-card {
+            text-align: center;
+            padding: 20px;
+            border-radius: 10px;
+            background: var(--light-color);
+        }
+        
+        .judge-name {
+            font-weight: 700;
+            margin-bottom: 5px;
+            color: var(--dark-color);
+        }
+        
+        .judge-specialty {
+            color: var(--secondary-color);
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 30px 0;
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+        }
+        
+        th, td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid #eee;
+        }
+        
+        th {
+            background-color: var(--primary-color);
+            color: white;
+            font-weight: 600;
+        }
+        
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+        
+        tr:hover {
+            background-color: #f1f1f1;
+        }
+        
+        .print-btn {
+            display: block;
+            margin: 30px auto;
+            background: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: background 0.3s;
+            font-size: 1rem;
+        }
+        
+        .print-btn:hover {
+            background: #0d5bba;
+        }
+        
+        @media print {
+            .print-btn {
+                display: none;
+            }
+            
+            body {
+                background: white;
+                color: black;
+            }
+            
+            header {
+                background: var(--primary-color) !important;
+                -webkit-print-color-adjust: exact;
+                print-color-adjust: exact;
+            }
+            
+            .info-card, .staff-section, .judges-section, table {
+                box-shadow: none;
+                border: 1px solid #ddd;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2rem;
+            }
+            
+            .competition-info, .staff-grid, .judges-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            table {
+                display: block;
+                overflow-x: auto;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <h1>Summeri Dance Competition 2024</h1>
+            <p class="subtitle">Международный турнир по спортивным танцам</p>
+            <div class="date-badge">15-17 ноября 2024</div>
+        </div>
+    </header>
+    
+    <div class="container">
+        <div class="competition-info">
+            <div class="info-card">
+                <h2>Основная информация</h2>
+                <div class="info-item">
+                    <strong>Название:</strong>
+                    <p>Summeri Dance Competition 2024</p>
+                </div>
+                <div class="info-item">
+                    <strong>Дата проведения:</strong>
+                    <p>15-17 ноября 2024 года</p>
+                </div>
+                <div class="info-item">
+                    <strong>Место проведения:</strong>
+                    <p>Дворец спорта "Олимпийский", Москва</p>
+                </div>
+                <div class="info-item">
+                    <strong>Организатор:</strong>
+                    <p>Федерация спортивных танцев России</p>
+                </div>
+            </div>
+            
+            <div class="info-card">
+                <h2>Категории участников</h2>
+                <div class="info-item">
+                    <p>Дети (6-12 лет)</p>
+                    <p>Юниоры (13-17 лет)</p>
+                    <p>Взрослые (18-35 лет)</p>
+                    <p>Профессионалы (18+)</p>
+                    <p>Сеньоры (35+)</p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="staff-section">
+            <h2>Организационная команда</h2>
+            <div class="staff-grid">
+                <div class="staff-card">
+                    <h3 class="staff-name">Алексей Петров</h3>
+                    <p class="staff-role">Главный судья</p>
+                </div>
+                <div class="staff-card">
+                    <h3 class="staff-name">Мария Иванова</h3>
+                    <p class="staff-role">Скрутинер</p>
+                </div>
+                <div class="staff-card">
+                    <h3 class="staff-name">Дмитрий Смирнов</h3>
+                    <p class="staff-role">Ди-джей</p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="judges-section">
+            <h2>Судейская коллегия</h2>
+            <div class="judges-grid">
+                <div class="judge-card">
+                    <h3 class="judge-name">Ирина Николаева</h3>
+                    <p class="judge-specialty">Стандартные танцы</p>
+                    <p>Международный арбитр WDSF</p>
+                </div>
+                <div class="judge-card">
+                    <h3 class="judge-name">Сергей Ковалёв</h3>
+                    <p class="judge-specialty">Латиноамериканские танцы</p>
+                    <p>Чемпион мира 2018</p>
+                </div>
+                <div class="judge-card">
+                    <h3 class="judge-name">Ольга Семёнова</h3>
+                    <p class="judge-specialty">Современные танцы</p>
+                    <p>Главный тренер сборной России</p>
+                </div>
+                <div class="judge-card">
+                    <h3 class="judge-name">Михаил Волков</h3>
+                    <p class="judge-specialty">Хореография</p>
+                    <p>Эксперт международного класса</p>
+                </div>
+                <div class="judge-card">
+                    <h3 class="judge-name">Екатерина Белова</h3>
+                    <p class="judge-specialty">Музыкальность</p>
+                    <p>Профессор ГИТИСа</p>
+                </div>
+            </div>
+        </div>
+        
+        <h2 style="text-align: center; color: var(--primary-color); margin: 40px 0 20px;">Результаты конкурса</h2>
+        
+        <table>
+            <thead>
+                <tr>
+                    <th>№ пары</th>
+                    <th>Имена участников</th>
+                    <th>Танец 1</th>
+                    <th>Танец 2</th>
+                    <th>Танец 3</th>
+                    <th>Танец 4</th>
+                    <th>Танец 5</th>
+                    <th>Итоговое место</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>101</td>
+                    <td>Иванов Иван / Петрова Анна</td>
+                    <td>1</td>
+                    <td>2</td>
+                    <td>1</td>
+                    <td>3</td>
+                    <td>2</td>
+                    <td>1</td>
+                </tr>
+                <tr>
+                    <td>102</td>
+                    <td>Смирнов Алексей / Козлова Елена</td>
+                    <td>2</td>
+                    <td>1</td>
+                    <td>3</td>
+                    <td>2</td>
+                    <td>1</td>
+                    <td>2</td>
+                </tr>
+                <tr>
+                    <td>103</td>
+                    <td>Петров Дмитрий / Сидорова Ольга</td>
+                    <td>3</td>
+                    <td>3</td>
+                    <td>2</td>
+                    <td>1</td>
+                    <td>3</td>
+                    <td>3</td>
+                </tr>
+                <tr>
+                    <td>104</td>
+                    <td>Кузнецов Андрей / Морозова Татьяна</td>
+                    <td>4</td>
+                    <td>4</td>
+                    <td>4</td>
+                    <td>4</td>
+                    <td>4</td>
+                    <td>4</td>
+                </tr>
+                <tr>
+                    <td>105</td>
+                    <td>Николаев Сергей / Волкова Ирина</td>
+                    <td>5</td>
+                    <td>5</td>
+                    <td>5</td>
+                    <td>5</td>
+                    <td>5</td>
+                    <td>5</td>
+                </tr>
+            </tbody>
+        </table>
+        
+        <button class="print-btn" onclick="window.print()">Распечатать результаты</button>
+    </div>
+    
+    <script>
+        // Сортировка таблицы при клике на заголовок
+        document.addEventListener('DOMContentLoaded', function() {
+            const table = document.querySelector('table');
+            if (table) {
+                table.addEventListener('click', function(e) {
+                    if (e.target.tagName === 'TH') {
+                        const th = e.target;
+                        const column = th.cellIndex;
+                        const rows = Array.from(table.querySelectorAll('tbody tr'));
+                        
+                        rows.sort((a, b) => {
+                            const aText = a.cells[column].textContent;
+                            const bText = b.cells[column].textContent;
+                            return aText.localeCompare(bText, undefined, {numeric: true});
+                        });
+                        
+                        const tbody = table.querySelector('tbody');
+                        tbody.innerHTML = '';
+                        rows.forEach(row => tbody.appendChild(row));
+                    }
+                });
+            }
+        });
+    </script>
+</body>
+</html>
