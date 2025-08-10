@@ -232,6 +232,24 @@
             background: #c0392b;
         }
         
+        /* Стили для предотвращения разрывов в PDF */
+        .page-break-avoid {
+            page-break-inside: avoid;
+        }
+        
+        .staff-grid, .judges-grid, .competition-info {
+            page-break-inside: avoid;
+        }
+        
+        table {
+            page-break-inside: auto;
+        }
+        
+        tr {
+            page-break-inside: avoid;
+            page-break-after: auto;
+        }
+        
         @media (max-width: 768px) {
             h1 {
                 font-size: 2rem;
@@ -258,7 +276,7 @@
     </header>
     
     <div class="container" id="content-to-export">
-        <div class="competition-info">
+        <div class="competition-info page-break-avoid">
             <div class="info-card">
                 <h2>Основная информация</h2>
                 <div class="info-item">
@@ -291,7 +309,7 @@
             </div>
         </div>
         
-        <div class="staff-section">
+        <div class="staff-section page-break-avoid">
             <h2>Организационная команда</h2>
             <div class="staff-grid">
                 <div class="staff-card">
@@ -309,7 +327,7 @@
             </div>
         </div>
         
-        <div class="judges-section">
+        <div class="judges-section page-break-avoid">
             <h2>Судейская коллегия</h2>
             <div class="judges-grid">
                 <div class="judge-card">
@@ -342,7 +360,7 @@
         
         <h2 style="text-align: center; color: var(--primary-color); margin: 40px 0 20px;">Результаты конкурса</h2>
         
-        <table>
+        <table class="page-break-avoid">
             <thead>
                 <tr>
                     <th>№ пары</th>
@@ -410,28 +428,30 @@
         </table>
     </div>
     
-    <button class="pdf-btn" id="generate-pdf">Сохранить в PDF (защищённый)</button>
+    <button class="pdf-btn" id="generate-pdf">Сохранить в PDF</button>
     
     <script>
-        // Функция для генерации защищённого PDF
         document.getElementById('generate-pdf').addEventListener('click', function() {
             const element = document.getElementById('content-to-export');
             const opt = {
                 margin: 10,
                 filename: 'Summeri_Competition_Results.pdf',
                 image: { type: 'jpeg', quality: 0.98 },
-                html2canvas: { scale: 2 },
-                jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' },
-                // Настройки защиты PDF
-                pdfEncryption: {
-                    userPassword: '', // Пароль для открытия (пустой - без пароля)
-                    ownerPassword: 'summeri2024', // Пароль владельца
-                    userPermissions: ['print', 'modify', 'copy', 'annot-forms'] // Запрещаем всё кроме просмотра
+                html2canvas: { 
+                    scale: 2,
+                    scrollY: 0,
+                    useCORS: true
+                },
+                jsPDF: { 
+                    unit: 'mm', 
+                    format: 'a4', 
+                    orientation: 'portrait',
+                    compress: true
+                },
+                pagebreak: { 
+                    mode: ['avoid-all', 'css', 'legacy'] 
                 }
             };
-            
-            // Показываем уведомление о защите PDF
-            alert('PDF будет сохранён с защитой от редактирования. Для открытия не требуется пароль, но изменения будут запрещены.');
             
             // Генерируем PDF
             html2pdf().set(opt).from(element).save();
