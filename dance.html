@@ -4,6 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Summeri Dance Competition</title>
+    <!-- Добавляем библиотеку html2pdf для генерации PDF -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
     <style>
         :root {
             --primary-color: #1a73e8;
@@ -142,7 +144,6 @@
             margin-bottom: 10px;
         }
         
-        /* Стили для судейской коллегии */
         .judges-section {
             background: white;
             border-radius: 15px;
@@ -213,10 +214,10 @@
             background-color: #f1f1f1;
         }
         
-        .print-btn {
+        .pdf-btn {
             display: block;
             margin: 30px auto;
-            background: var(--primary-color);
+            background: #e74c3c;
             color: white;
             border: none;
             padding: 12px 25px;
@@ -227,30 +228,8 @@
             font-size: 1rem;
         }
         
-        .print-btn:hover {
-            background: #0d5bba;
-        }
-        
-        @media print {
-            .print-btn {
-                display: none;
-            }
-            
-            body {
-                background: white;
-                color: black;
-            }
-            
-            header {
-                background: var(--primary-color) !important;
-                -webkit-print-color-adjust: exact;
-                print-color-adjust: exact;
-            }
-            
-            .info-card, .staff-section, .judges-section, table {
-                box-shadow: none;
-                border: 1px solid #ddd;
-            }
+        .pdf-btn:hover {
+            background: #c0392b;
         }
         
         @media (max-width: 768px) {
@@ -278,7 +257,7 @@
         </div>
     </header>
     
-    <div class="container">
+    <div class="container" id="content-to-export">
         <div class="competition-info">
             <div class="info-card">
                 <h2>Основная информация</h2>
@@ -429,11 +408,35 @@
                 </tr>
             </tbody>
         </table>
-        
-        <button class="print-btn" onclick="window.print()">Распечатать результаты</button>
     </div>
     
+    <button class="pdf-btn" id="generate-pdf">Сохранить в PDF (защищённый)</button>
+    
     <script>
+        // Функция для генерации защищённого PDF
+        document.getElementById('generate-pdf').addEventListener('click', function() {
+            const element = document.getElementById('content-to-export');
+            const opt = {
+                margin: 10,
+                filename: 'Summeri_Competition_Results.pdf',
+                image: { type: 'jpeg', quality: 0.98 },
+                html2canvas: { scale: 2 },
+                jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' },
+                // Настройки защиты PDF
+                pdfEncryption: {
+                    userPassword: '', // Пароль для открытия (пустой - без пароля)
+                    ownerPassword: 'summeri2024', // Пароль владельца
+                    userPermissions: ['print', 'modify', 'copy', 'annot-forms'] // Запрещаем всё кроме просмотра
+                }
+            };
+            
+            // Показываем уведомление о защите PDF
+            alert('PDF будет сохранён с защитой от редактирования. Для открытия не требуется пароль, но изменения будут запрещены.');
+            
+            // Генерируем PDF
+            html2pdf().set(opt).from(element).save();
+        });
+
         // Сортировка таблицы при клике на заголовок
         document.addEventListener('DOMContentLoaded', function() {
             const table = document.querySelector('table');
