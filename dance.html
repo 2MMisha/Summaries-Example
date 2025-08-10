@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Summeri Dance Competition</title>
-    <!-- Добавляем библиотеку html2pdf для генерации PDF -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
     <style>
         :root {
@@ -232,22 +231,30 @@
             background: #c0392b;
         }
         
-        /* Стили для предотвращения разрывов в PDF */
-        .page-break-avoid {
-            page-break-inside: avoid;
-        }
-        
-        .staff-grid, .judges-grid, .competition-info {
-            page-break-inside: avoid;
-        }
-        
-        table {
-            page-break-inside: auto;
-        }
-        
-        tr {
-            page-break-inside: avoid;
-            page-break-after: auto;
+        /* Стили для PDF */
+        @media print {
+            body {
+                background-color: white;
+                padding: 0;
+            }
+            
+            .container {
+                padding: 0;
+                max-width: 100%;
+            }
+            
+            header {
+                border-radius: 0;
+                margin-bottom: 20px;
+            }
+            
+            .page-break {
+                page-break-after: always;
+            }
+            
+            .no-break {
+                page-break-inside: avoid;
+            }
         }
         
         @media (max-width: 768px) {
@@ -276,7 +283,7 @@
     </header>
     
     <div class="container" id="content-to-export">
-        <div class="competition-info page-break-avoid">
+        <div class="competition-info no-break">
             <div class="info-card">
                 <h2>Основная информация</h2>
                 <div class="info-item">
@@ -309,7 +316,7 @@
             </div>
         </div>
         
-        <div class="staff-section page-break-avoid">
+        <div class="staff-section no-break">
             <h2>Организационная команда</h2>
             <div class="staff-grid">
                 <div class="staff-card">
@@ -327,7 +334,7 @@
             </div>
         </div>
         
-        <div class="judges-section page-break-avoid">
+        <div class="judges-section no-break">
             <h2>Судейская коллегия</h2>
             <div class="judges-grid">
                 <div class="judge-card">
@@ -360,7 +367,7 @@
         
         <h2 style="text-align: center; color: var(--primary-color); margin: 40px 0 20px;">Результаты конкурса</h2>
         
-        <table class="page-break-avoid">
+        <table class="no-break">
             <thead>
                 <tr>
                     <th>№ пары</th>
@@ -434,26 +441,33 @@
         document.getElementById('generate-pdf').addEventListener('click', function() {
             const element = document.getElementById('content-to-export');
             const opt = {
-                margin: 10,
+                margin: [15, 15, 15, 15],
                 filename: 'Summeri_Competition_Results.pdf',
-                image: { type: 'jpeg', quality: 0.98 },
+                image: { 
+                    type: 'jpeg', 
+                    quality: 0.98 
+                },
                 html2canvas: { 
                     scale: 2,
                     scrollY: 0,
-                    useCORS: true
+                    useCORS: true,
+                    letterRendering: true,
+                    allowTaint: true
                 },
                 jsPDF: { 
-                    unit: 'mm', 
-                    format: 'a4', 
+                    unit: 'mm',
+                    format: 'a4',
                     orientation: 'portrait',
                     compress: true
                 },
                 pagebreak: { 
-                    mode: ['avoid-all', 'css', 'legacy'] 
+                    mode: ['css'],
+                    before: '.page-break',
+                    avoid: '.no-break'
                 }
             };
             
-            // Генерируем PDF
+            // Генерируем PDF с сохранением дизайна
             html2pdf().set(opt).from(element).save();
         });
 
