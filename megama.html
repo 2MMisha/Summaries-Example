@@ -1,0 +1,427 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>השאלת ציוד - מגמת קולנוע רביבים</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+
+    <style>
+        :root {
+            --primary: #1e3a8a;
+            --secondary: #3b82f6;
+            --bg-color: #f3f4f6;
+            --surface: #ffffff;
+            --text-main: #1f2937;
+            --text-light: #6b7280;
+            --border: #e5e7eb;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Rubik', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            line-height: 1.6;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: var(--surface);
+            border-radius: 12px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.05);
+            padding: 40px;
+            border-top: 8px solid var(--primary);
+        }
+
+        .header-section {
+            text-align: center;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 2px solid var(--border);
+        }
+
+        .header-section h1 {
+            color: var(--primary);
+            font-size: 28px;
+            font-weight: 700;
+            margin-bottom: 5px;
+        }
+
+        .header-section h2 {
+            color: var(--text-light);
+            font-size: 18px;
+            font-weight: 400;
+        }
+
+        .flex-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+
+        .flex-col {
+            flex: 1;
+            min-width: 280px;
+            background: #f9fafb;
+            padding: 20px;
+            border-radius: 8px;
+            border: 1px solid var(--border);
+        }
+
+        .section-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--primary);
+            margin-bottom: 15px;
+            border-bottom: 2px solid var(--secondary);
+            display: inline-block;
+            padding-bottom: 5px;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        label {
+            display: block;
+            font-weight: 500;
+            margin-bottom: 5px;
+            font-size: 14px;
+        }
+
+        input[type="text"],
+        input[type="tel"],
+        input[type="email"],
+        input[type="datetime-local"],
+        select {
+            width: 100%;
+            padding: 10px 12px;
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            font-family: 'Rubik', sans-serif;
+            font-size: 14px;
+            background-color: white;
+            transition: all 0.2s;
+        }
+
+        input:focus, select:focus {
+            outline: none;
+            border-color: var(--secondary);
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+        }
+
+        .contract-text {
+            font-size: 13px;
+            color: #374151;
+            background: #fffbeb;
+            padding: 20px;
+            border-radius: 8px;
+            border: 1px dashed #fcd34d;
+            margin-bottom: 30px;
+        }
+
+        .contract-text h3 {
+            color: #b45309;
+            margin-top: 15px;
+            margin-bottom: 5px;
+            font-size: 14px;
+        }
+
+        .contract-text ul {
+            padding-right: 20px;
+            margin-bottom: 10px;
+        }
+
+        .equipment-category {
+            margin-bottom: 20px;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            overflow: hidden;
+            background: #ffffff;
+        }
+
+        .category-header {
+            background: var(--primary);
+            color: white;
+            padding: 8px 15px;
+            font-weight: 600;
+            font-size: 15px;
+        }
+
+        .equipment-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+            gap: 12px;
+            padding: 15px;
+        }
+
+        .equip-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 13px;
+        }
+
+        .equip-item input[type="checkbox"] {
+            width: 16px;
+            height: 16px;
+            cursor: pointer;
+            accent-color: var(--primary);
+        }
+
+        .equip-item input[type="number"] {
+            width: 50px;
+            padding: 4px;
+            border: 1px solid var(--border);
+            border-radius: 4px;
+            font-size: 12px;
+        }
+
+        .signatures {
+            display: flex;
+            gap: 30px;
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 2px solid var(--border);
+        }
+
+        .sig-box {
+            flex: 1;
+            text-align: center;
+        }
+
+        .sig-line {
+            margin-top: 40px;
+            border-top: 1px solid #000;
+            padding-top: 10px;
+            font-weight: 600;
+            font-size: 14px;
+        }
+
+        .btn-export {
+            display: block;
+            width: 100%;
+            background: var(--primary);
+            color: white;
+            text-align: center;
+            padding: 15px;
+            font-size: 16px;
+            font-weight: 600;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            margin-top: 30px;
+            transition: background 0.3s;
+        }
+
+        .btn-export:hover {
+            background: #1e40af;
+        }
+
+        .avoid-break {
+            page-break-inside: avoid;
+            break-inside: avoid;
+        }
+
+        @media print {
+            body { padding: 0; background: white; }
+            .container { box-shadow: none; border: none; padding: 0; max-width: 100%; }
+            .btn-export { display: none !important; }
+            input, select, input[type="number"] { border: 1px solid #ccc; border-radius: 4px; background: white; color: black; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container" id="pdf-content">
+        
+        <div class="header-section avoid-break">
+            <h1>תקנון השאלת ציוד</h1>
+            <h2>מגמת קולנוע רביבים | תשפ''ו - 2026</h2>
+        </div>
+
+        <div class="flex-row avoid-break">
+            <div class="flex-col">
+                <div class="section-title">צוות אחראי ציוד, המגמה</div>
+                <p><strong>מגמת קולנוע רביבים</strong></p>
+                <p>גוש עציון 23, ראשל''צ</p>
+                <p>קו חם (תקלות בסט): מיכאל - 054-7798676</p>
+            </div>
+
+            <div class="flex-col">
+                <div class="section-title">פרטי ההפקה (השואל)</div>
+                <div class="form-group">
+                    <label>שם ומשפחה (מפיק/אחראי ציוד):</label>
+                    <input type="text" placeholder="הקלד שם מלא">
+                </div>
+                <div class="form-group">
+                    <label>כיתה:</label>
+                    <select>
+                        <option value="" disabled selected>בחר/י כיתה...</option>
+                        <option value="י">י'</option>
+                        <option value="יא">י''א</option>
+                        <option value="יב">י''ב</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>טלפון:</label>
+                    <input type="tel" placeholder="05X-XXXXXXX">
+                </div>
+            </div>
+        </div>
+
+        <div class="flex-row avoid-break">
+            <div class="flex-col">
+                <div class="form-group">
+                    <label>תאריך ושעת לקיחת ציוד:</label>
+                    <input type="datetime-local">
+                </div>
+            </div>
+            <div class="flex-col">
+                <div class="form-group">
+                    <label>תאריך ושעת החזרת ציוד:</label>
+                    <input type="datetime-local">
+                </div>
+            </div>
+        </div>
+
+        <div class="contract-text avoid-break">
+            <strong>כללי:</strong> תקנון זה נועד להבטיח את תקינות הציוד ושמירה על רצף העבודה של כלל הפקות המגמה. ההסכם תקף החל מתאריך ושעת לקיחה ועד תאריך ושעת החזרה. אנחנו החתומים הנ״ל הסכמנו על השאלת ציוד לפי הרשימה המצורפת ועל תנאי השאלה כדלקמן:
+            
+            <h3>שלב א': הזמנת/בקשת הציוד</h3>
+            <ul>
+                <li>המפיק/ה הם האחראים הבלעדיים על תיאום ההזמנה, לקיחת הציוד והחזרתו במועד.</li>
+                <li>יש לשלוח טופס הזמנת ציוד מסודר לפחות 3 ימים מראש.</li>
+                <li>אין להוציא ציוד ללא אישור מפורש מצוות אחראי ציוד.</li>
+            </ul>
+
+            <h3>שלב ב': לקיחת הציוד ובדיקתו</h3>
+            <ul>
+                <li>חובה על בעלי התפקידים להגיע יחד לבדיקת הציוד (צלם למצלמות, תאורן לתאורה, סאונדמן לסאונד).</li>
+                <li>מי שחתום על טופס ההשאלה נושא באחריות המנהלתית על כלל הציוד.</li>
+            </ul>
+
+            <h3>שלב ג': החזרת הציוד</h3>
+            <ul>
+                <li>הציוד יוחזר בבוקר היום שנקבע ובשעה המדויקת, או עד 10:00.</li>
+                <li>הציוד יוחזר כשהוא <strong>נקי, מסודר ומקופל</strong> (כולל גלגול כבלים תקני). ציוד מבולגן לא ייחשב כציוד שהוחזר.</li>
+                <li>באחריות הצוות לגבות חומרי גלם ב-2 מקומות לפחות לפני החזרת כרטיסי זיכרון.</li>
+            </ul>
+
+            <h3>נהלים בזמן הפקה וסנקציות (נזקים):</h3>
+            <ul>
+                <li>אין להשאיר ציוד ללא השגחה או ברכב (סכנת גניבה ונזקי חום).</li>
+                <li>במקרה של נזק מרשלנות או אובדן ציוד, <strong>כל חברי צוות ההפקה ישאו בנטל הכספי</strong> של עלות התיקון או הרכישה מחדש.</li>
+                <li>חל איסור להעביר ציוד ישירות לצוות אחר ללא אישור וחתימה על נספח העברת ציוד.</li>
+            </ul>
+        </div>
+
+        <div class="equipment-category avoid-break">
+            <div class="category-header">מצלמות ועדשות סוני</div>
+            <div class="equipment-grid">
+                <div class="equip-item"><input type="checkbox"> <label>מצלמת סוני S3</label></div>
+                <div class="equip-item"><input type="checkbox"> <label>מצלמת סוני R3</label></div>
+                <div class="equip-item"><input type="checkbox"> <label>כלוב (+מפתח)</label></div>
+                <div class="equip-item"><input type="checkbox"> <label>כרטיסי זיכרון (2)</label></div>
+                <div class="equip-item"><input type="checkbox"> <label>סוללות ומטען סוני</label></div>
+                <div class="equip-item"><input type="checkbox"> <label>עדשה סוני 24-70</label></div>
+                <div class="equip-item"><input type="checkbox"> <label>עדשה סוני 28-60</label></div>
+                <div class="equip-item"><input type="checkbox"> <label>עדשה סוני 50</label></div>
+                <div class="equip-item"><input type="checkbox"> <label>עדשה סוני 70-180</label></div>
+                <div class="equip-item"><input type="checkbox"> <label>פילטר ND var / UV</label></div>
+            </div>
+        </div>
+
+        <div class="equipment-category avoid-break">
+            <div class="category-header">סאונד והקלטה</div>
+            <div class="equipment-grid">
+                <div class="equip-item"><input type="checkbox"> <label>מכשיר ZOOM H5/H4</label></div>
+                <div class="equip-item"><input type="checkbox"> <label>תיק נק מייק</label></div>
+                <div class="equip-item"><input type="checkbox"> <label>מיקרופון קונדנסר</label></div>
+                <div class="equip-item"><input type="checkbox"> <label>מקל בום</label></div>
+                <div class="equip-item"><input type="checkbox"> <label>פיש (Zepelin)</label></div>
+                <div class="equip-item"><input type="checkbox"> <label>כיסוי שפן / מגן רוח</label></div>
+                <div class="equip-item"><input type="checkbox"> <label>כבל XLR ( <input type="number" min="1" max="10" placeholder="כמות"> )</label></div>
+                <div class="equip-item"><input type="checkbox"> <label>אוזניות</label></div>
+            </div>
+        </div>
+
+        <div class="equipment-category avoid-break">
+            <div class="category-header">תאורה ומוניטורים</div>
+            <div class="equipment-grid">
+                <div class="equip-item"><input type="checkbox"> <label>מוניטור קטן + זרוע</label></div>
+                <div class="equip-item"><input type="checkbox"> <label>מוניטור גדול בקייס</label></div>
+                <div class="equip-item"><input type="checkbox"> <label>מזוודת לדים גדול</label></div>
+                <div class="equip-item"><input type="checkbox"> <label>תיק לד גדול</label></div>
+                <div class="equip-item"><input type="checkbox"> <label>תיק לד בינוני/קטן</label></div>
+                <div class="equip-item"><input type="checkbox"> <label>תאורת חשמל (תפוז/טוויני)</label></div>
+                <div class="equip-item"><input type="checkbox"> <label>תיק ג'לטינים ותנינים</label></div>
+            </div>
+        </div>
+
+        <div class="equipment-category avoid-break">
+            <div class="category-header">חצובות, אחיזה וחשמל</div>
+            <div class="equipment-grid">
+                <div class="equip-item"><input type="checkbox"> <label>חצובת מצלמה</label></div>
+                <div class="equip-item"><input type="checkbox"> <label>חצובת תאורה</label></div>
+                <div class="equip-item"><input type="checkbox"> <label>סטנד ריכוך</label></div>
+                <div class="equip-item"><input type="checkbox"> <label>תיק מכתוף</label></div>
+                <div class="equip-item"><input type="checkbox"> <label>גימבל מלא</label></div>
+                <div class="equip-item"><input type="checkbox"> <label>דולי + פסים/קושרת</label></div>
+                <div class="equip-item"><input type="checkbox"> <label>כבל מאריך / תוף</label></div>
+                <div class="equip-item"><input type="checkbox"> <label>קלפ צילום</label></div>
+            </div>
+        </div>
+
+        <div class="signatures avoid-break">
+            <div class="sig-box">
+                <div class="sig-line">חתימת התלמיד הלוקח (אחראי הציוד)</div>
+            </div>
+            <div class="sig-box">
+                <div class="sig-line">חתימת צוות אחראי ציוד במגמה</div>
+            </div>
+        </div>
+
+        <button class="btn-export" id="btnExport" onclick="downloadPDF()">יצוא ושמירה כ-PDF לחתום</button>
+
+    </div>
+
+    <script>
+        function downloadPDF() {
+            const element = document.getElementById('pdf-content');
+            const btn = document.getElementById('btnExport');
+            
+            btn.style.display = 'none';
+
+            const opt = {
+                margin:       [10, 10, 15, 10],
+                filename:     'תקנון_והזמנת_ציוד_רביבים.pdf',
+                image:        { type: 'jpeg', quality: 1.0 },
+                html2canvas:  { 
+                    scale: 2, 
+                    useCORS: true,
+                    scrollY: 0
+                },
+                jsPDF:        { unit: 'mm', format: 'a4', orientation: 'portrait' },
+                pagebreak:    { mode: ['avoid-all', 'css', 'legacy'] }
+            };
+
+            html2pdf().set(opt).from(element).save().then(() => {
+                btn.style.display = 'block';
+            });
+        }
+    </script>
+</body>
+</html>
